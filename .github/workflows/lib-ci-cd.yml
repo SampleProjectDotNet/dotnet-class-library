@@ -19,9 +19,7 @@ jobs:
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
       SONAR_URL:           ${{ secrets.SONAR_URL }}
       SONAR_TOKEN:         ${{ secrets.SONAR_TOKEN }}
-    defaults:
-      run:
-        working-directory: 'dotnet-class-library/ClassLibrary'
+
 
 
   # publish-github:
