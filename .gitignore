@@ -1,0 +1,61 @@
+
+# Arquivos de build
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.log
+*.vspscc
+*.vssscc
+
+# Configurações do Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Arquivos de pacotes NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Arquivos de publicação
+*.publishsettings
+*.pubxml
+*.pubxml.user
+
+# Arquivos temporários do sistema
+*.tmp
+*.temp
+*.pid
+*.gz
+
+# Arquivos de configuração locais
+appsettings.Development.json
+appsettings.Local.json
+*.csproj.user
+*.csproj.dtbcache.json
+
+# Arquivos gerados automaticamente
+Generated_Code/
+
+# Arquivos de cache do Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Arquivos de cache do MacOS
+.DS_Store
+._*
+
+# Arquivos de cache do Linux
+*~
+
+# Arquivos de teste
+TestResults/
+*.testlog
