@@ -1,22 +1,28 @@
-name: CI/CD Orquestrado
+name: CI – Class Library
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-    name: CI – Build, Test, Sonar e Publish
+    name: Build, Test, Sonar e Publish (ClassLibrary)
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
     with:
+      solution-path: 'dotnet-class-library/ClassLibrary/ClassLibrary.csproj'
+      project-folder: 'ClassLibrary'
+      runs-on: 'windows-latest'
       runSonar: true
     secrets:
-      SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+      SONAR_PROJECT_KEY:  ${{ secrets.SONAR_PROJECT_KEY }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-      SONAR_URL: ${{ secrets.SONAR_URL }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_URL:           ${{ secrets.SONAR_URL }}
+      SONAR_TOKEN:         ${{ secrets.SONAR_TOKEN }}
+    defaults:
+      run:
+        working-directory: 'dotnet-class-library/ClassLibrary'
+
 
   # publish-github:
   #   needs: build
