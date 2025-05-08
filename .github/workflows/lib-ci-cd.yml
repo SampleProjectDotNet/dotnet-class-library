@@ -41,6 +41,16 @@ jobs:
         run: |
           nuget sources add -Name "github" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username "${{ github.actor }}" -Password "${{ secrets.GITHUB_TOKEN }}" -StorePasswordInClearText
       - name: Push package
+
+      - name: Mostrar diretório atual
+        run: Get-Location
+
+      - name: Listar arquivos no diretório raiz
+        run: Get-ChildItem -Recurse
+      
+      - name: Listar arquivos dentro da pasta nupkg
+        run: Get-ChildItem -Path "./nupkg"
+
         run: |
           nuget push ./nupkg/*.nupkg -Source "github" -ApiKey "${{ secrets.NUGET_API_KEY }}"
 
