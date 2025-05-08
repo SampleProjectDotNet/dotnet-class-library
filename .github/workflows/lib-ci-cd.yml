@@ -52,5 +52,5 @@ jobs:
 
       - name: Push package
         run: |
-          nuget push ./nupkg/*.nupkg -Source "github" -ApiKey "${{ secrets.NUGET_API_KEY }}"
+          nuget push ./nupkg/ClassLibrary.1.0.0.nupkg -Source "github" -ApiKey "${{ secrets.NUGET_API_KEY }}"
 
