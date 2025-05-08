@@ -10,9 +10,9 @@ jobs:
     name: Build, Test, Sonar e Publish (ClassLibrary)
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
     with:
-      solution-path: 'dotnet-class-library/ClassLibrary/ClassLibrary.sln'
+      solution-path: 'ClassLibrary/ClassLibrary.sln'
       project-folder: 'ClassLibrary'
-      csproj: 'dotnet-class-library/ClassLibrary/ClassLibrary.csproj'
+      csproj: 'ClassLibrary/ClassLibrary.csproj'
       runs-on: 'windows-latest'
       runSonar: true
     secrets:
