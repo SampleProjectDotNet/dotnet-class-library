@@ -1,4 +1,4 @@
-name: CI – Class Library
+name: ClassLibrary CI/CD
 
 on:
   push:
@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build, Test, Sonar e Publish (ClassLibrary)
+  call-build:
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
     with:
       solution-path: 'ClassLibrary/ClassLibrary.sln'
@@ -21,11 +20,9 @@ jobs:
       SONAR_URL:           ${{ secrets.SONAR_URL }}
       SONAR_TOKEN:         ${{ secrets.SONAR_TOKEN }}
 
-
-
-  publish:
+  call-publish:
     runs-on: windows-latest
-    needs: build
+    needs: call-build
     steps:
       - uses: actions/checkout@v4
       - name: Download artifact .nupkg
@@ -40,15 +37,6 @@ jobs:
       - name: Configure NuGet source
         run: |
           nuget sources add -Name "github" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username "${{ github.actor }}" -Password "${{ secrets.GITHUB_TOKEN }}" -StorePasswordInClearText
-
-      - name: Mostrar diretório atual
-        run: Get-Location
-
-      - name: Listar arquivos no diretório raiz
-        run: Get-ChildItem -Recurse
-      
-      - name: Listar arquivos dentro da pasta nupkg
-        run: Get-ChildItem -Path "./nupkg"
 
       - name: Push package
         run: |
