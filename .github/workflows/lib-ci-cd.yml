@@ -12,6 +12,7 @@ jobs:
     with:
       solution-path: 'dotnet-class-library/ClassLibrary/ClassLibrary.sln'
       project-folder: 'ClassLibrary'
+      csproj: 'dotnet-class-library/ClassLibrary/ClassLibrary.csproj'
       runs-on: 'windows-latest'
       runSonar: true
     secrets:
@@ -39,3 +40,32 @@ jobs:
 
   #     - name: Publish to GitHub Packages
   #       run: dotnet nuget push **/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+
+
+  name: Windows Forms App CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: CI – Build, Test, Sonar e Publish
+    uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
+    with:
+      solution-path: 'WindowsFormsApp/WindowsFormsApp.sln'
+      project-folder: 'WindowsFormsApp/WindowsFormsApp'
+      csproj: 'WindowsFormsApp/WindowsFormsApp/WindowsFormsApp.csproj'
+      runs-on: 'windows-latest'
+      runSonar: true
+    secrets:
+      SONAR_PROJECT_KEY:      ${{ secrets.SONAR_PROJECT_KEY }}
+      SONAR_ORGANIZATION:     ${{ secrets.SONAR_ORGANIZATION }}
+      SONAR_URL:              ${{ secrets.SONAR_URL }}
+      SONAR_TOKEN:            ${{ secrets.SONAR_TOKEN }}
+  
+  publish-local:
+    needs: build
+    uses: SampleProjectDotNet/reusable-workflows/.github/workflows/publish-to-local-server.yml@main
