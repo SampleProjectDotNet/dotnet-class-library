@@ -23,37 +23,24 @@ jobs:
 
 
 
-  publish-github:
+  publish:
+    runs-on: windows-latest
     needs: build
-    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-    - name: Download NuGet package artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: nupkg   
-        path: ./nupkg
-    - name: Baixar NuGet.exe
-      run: |
-        Invoke-WebRequest `
-          -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe `
-          -OutFile nuget.exe
-    - name: Configurar GitHub Packages como fonte
-      run: |
-        ./nuget.exe sources add `
-          -name "github" `
-          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
-          -username "${{ github.actor }}" `
-          -password "${{ secrets.GITHUB_TOKEN }}" `
-          -StorePasswordInClearText
-      shell: powershell
-    - name: Publicar pacote no GitHub Packages
-      run: |
-        ./nuget.exe push "./nupkg/*.nupkg" `
-          -Source "github" `
-          -ApiKey "${{ secrets.GITHUB_TOKEN }}"
-      shell: powershell
+      - uses: actions/checkout@v4
+      - name: Download artifact .nupkg
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkg
+          path: ./nupkg
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+        with:
+          nuget-version: 'latest'
+      - name: Configure NuGet source
+        run: |
+          nuget sources add -Name "github" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username "${{ github.actor }}" -Password "${{ secrets.GITHUB_TOKEN }}" -StorePasswordInClearText
+      - name: Push package
+        run: |
+          nuget push "./nupkg/*.nupkg" -Source "github" -ApiKey "${{ secrets.GITHUB_TOKEN }}"
 
