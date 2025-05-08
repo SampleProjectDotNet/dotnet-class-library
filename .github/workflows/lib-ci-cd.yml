@@ -23,20 +23,41 @@ jobs:
 
 
 
-  # publish-github:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+    publish-github:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: '7.x'
+      - name: Download NuGet package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkg   
+          path: ./nupkg
 
-  #     - name: Login to GitHub Packages
-  #       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Baixar NuGet.exe
+        run: |
+          Invoke-WebRequest `
+            -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe `
+            -OutFile nuget.exe
 
-  #     - name: Publish to GitHub Packages
-  #       run: dotnet nuget push **/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+      - name: Configurar GitHub Packages como fonte
+        run: |
+          ./nuget.exe sources add `
+            -name "github" `
+            -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            -username "${{ github.actor }}" `
+            -password "${{ secrets.GITHUB_TOKEN }}" `
+            -StorePasswordInClearText
+        shell: powershell
+
+      - name: Publicar pacote no GitHub Packages
+        run: |
+          ./nuget.exe push "./nupkg/*.nupkg" `
+            -Source "github" `
+            -ApiKey "${{ secrets.GITHUB_TOKEN }}"
+        shell: powershell
+
