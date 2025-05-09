@@ -9,11 +9,8 @@ jobs:
   call-build:
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
     with:
-      solution-path: 'ClassLibrary/ClassLibrary.sln'
-      project-folder: 'ClassLibrary'
-      csproj: 'ClassLibrary/ClassLibrary.csproj'
-      runs-on: 'windows-latest'
-      runSonar: true
+      project-name: 'ClassLibrary'
+      
     secrets:
       SONAR_PROJECT_KEY:  ${{ secrets.SONAR_PROJECT_KEY }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
