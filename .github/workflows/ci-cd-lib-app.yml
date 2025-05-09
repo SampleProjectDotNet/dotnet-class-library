@@ -10,12 +10,8 @@ jobs:
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
     with:
       project-name: 'ClassLibrary'
-      
-    secrets:
-      SONAR_PROJECT_KEY:  ${{ secrets.SONAR_PROJECT_KEY }}
-      SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-      SONAR_URL:           ${{ secrets.SONAR_URL }}
-      SONAR_TOKEN:         ${{ secrets.SONAR_TOKEN }}
+
+    secrets: inherit
 
   call-publish:
     needs: call-build
