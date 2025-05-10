@@ -8,9 +8,6 @@ on:
 jobs:
   call-build:
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
-    with:
-      project-name: 'ClassLibrary'
-
     secrets: inherit
 
   call-publish:
