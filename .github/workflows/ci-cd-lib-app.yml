@@ -5,6 +5,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+
+permissions:
+  contents: read 
+  packages: write
+
 jobs:
   call-build:
     uses: SampleProjectDotNet/reusable-workflows/.github/workflows/dotnet-build-test.yml@main
